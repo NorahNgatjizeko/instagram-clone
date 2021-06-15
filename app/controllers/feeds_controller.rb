@@ -7,31 +7,36 @@ class FeedsController < ApplicationController
   end
 
   def show
+    @favorite = current_user.favorites.find_by(feed_id: @feed.id)
   end
 
   def new
-    if params[:back]
-      @feed = Feed.new(feed_params)
-    else
+
       @feed = Feed.new
-    end
-  end
+   end
 
-  def edit
-  end
+   def edit
+       if @feed.user != current_user
+         flash.now[:error] = 'unauthorized access!'
+         redirect_to feeds_path
+       else
+     end
+   end
 
-  def create
-    @feed = current_user.feeds.build(feed_params)
+   def create
+   @feed = Feed.new(picture_params)
+   @feed.user_id = current_user.id
     if params[:back]
       render :new
     else
-      if @feed.save
-        redirect_to @feed, notice: 'Feed was posted'
-      else
-        render :new
-      end
-    end
+    if @feed.save
+      FeedMailer.feed_mail(@feed).deliver
+    redirect_to feeds_path, notice: 'Feed was posted'
+    else
+    render :new
   end
+ end
+end
 
   def confirm
     @feed = current_user.feeds.build(feed_params)
@@ -57,17 +62,17 @@ class FeedsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feed
+  # Use callbacks to share common setup or constraints between actions.
+  def set_feed
       @feed = Feed.find(params[:id])
-    end
+  end
 
     # Only allow a list of trusted parameters through.
-    def feed_params
-      params.require(:feed).permit(:content, :image, :image_cache)
-    end
+  def feed_params
+      params.require(:feed).permit(:image, :content, :image_cache, :user_id, :email)
+  end
 
-    def user_login_check
+  def user_login_check
    unless logged_in?
      redirect_to root_path
    end
