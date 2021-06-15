@@ -1,4 +1,5 @@
 <h1>Your inquiry is complete！</h1>
-<h4>name: <%= @feed.name %></h4>
+<h4>name: <%= @feed.user.name %></h4>
 <h4>Confirmation of inquiry contents</h4>
 <p>content: <%= @feed.content %></p>
+<%= image_tag(@feed.image.url) if @feed.image && @feed.image.url %>

@@ -40,7 +40,6 @@ class UsersController < ApplicationController
    redirect_to users_path, notice:"User was deleted!"
  end
 
-
   private
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :image, :image_cache)

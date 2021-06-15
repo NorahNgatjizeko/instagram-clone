@@ -24,14 +24,14 @@ class FeedsController < ApplicationController
    end
 
    def create
-   @feed = Feed.new(picture_params)
+   @feed = Feed.new(feed_params)
    @feed.user_id = current_user.id
     if params[:back]
       render :new
     else
     if @feed.save
       FeedMailer.feed_mail(@feed).deliver
-    redirect_to feeds_path, notice: 'Feed was posted'
+      redirect_to feeds_path, notice: 'Feed was posted'
     else
     render :new
   end
