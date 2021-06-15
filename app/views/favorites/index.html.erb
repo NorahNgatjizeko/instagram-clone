@@ -1,0 +1,18 @@
+<h1>Favorites list</h1>
+
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Content</th>
+    <th>Feed</th>
+  </tr>
+  <tr>
+    <% @favorites.each do |favorite| %>
+    <td><%= favorite.feed.user.name %></td>
+    <td><%= favorite.feed.content %></td>
+    <td><%= image_tag favorite.feed.image.url %></td>
+  </tr>
+<% end %>
+</table>
+
+  <%= link_to 'Back', feeds_path %>
