@@ -30,7 +30,7 @@ class FeedsController < ApplicationController
       render :new
     else
     if @feed.save
-      FeedMailer.feed_mail(@feed).deliver
+      FeedMailer.feed_mail(@feeds).deliver
       redirect_to feeds_path, notice: 'Feed was posted'
     else
     render :new
