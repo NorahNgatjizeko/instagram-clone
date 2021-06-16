@@ -11,8 +11,7 @@ class FeedsController < ApplicationController
   end
 
   def new
-
-      @feed = Feed.new
+      @feed= current_user.feeds.build
    end
 
    def edit
