@@ -1,9 +1,24 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Content:</strong>
+  <%= @feed.content %>
+</p>
+<p>
   <strong>Image:</strong>
-  <%= @feed.image_tag @feed.image.url %>
+  <%= image_tag @feed.image.url  %>
 </p>
 
-<%= link_to 'Edit', edit_feed_path(@feed) %> |
-<%= link_to 'Back', feeds_path %>
+<% unless @feed.user_id == current_user.id %>
+  <% if @favorite.present? %>
+    <%= link_to 'Not a favorite', favorite_path(id: @favorite.id), method: :delete, class:'btn btn-danger' %>
+  <% else %>
+    <%= link_to 'Favorite', favorites_path(feed_id: @feed.id), method: :post, class:'btn btn-primary'%>
+  <% end %>
+  <% end %>
+<% if logged_in? && @feed.user_id == current_user.id %>
+  <button type="button" class="btn btn-success btn-sm"><%= link_to 'Edit', edit_feed_path(@feed) %></button>
+  <button type="button" class="btn btn-danger btn-sm"><%= link_to 'Delete', @feed, method: :delete, data: { confirm: 'Are you sure?' } %></button>
+<% end %>
+
+<button type="button" class="btn btn-dark btn-sm"><%= link_to 'Back', feeds_path %></button>
