@@ -6,7 +6,7 @@
 </p>
 <p>
   <strong>Image:</strong>
-  <%= image_tag @feed.image.url  %>
+  <%= image_tag feed.image.url, style:"width:200px;height:130px" %>
 </p>
 
 <% unless @feed.user_id == current_user.id %>
