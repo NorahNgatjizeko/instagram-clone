@@ -11,7 +11,7 @@ class FeedsController < ApplicationController
   end
 
   def new
-      @feed= current_user.feeds.build
+      @feed = current_user.feeds.build
    end
 
    def edit
@@ -23,17 +23,16 @@ class FeedsController < ApplicationController
    end
 
    def create
-   @feed = Feed.new(feed_params)
-   @feed.user_id = current_user.id
-    if params[:back]
-      render :new
-    else
-    if @feed.save
-      FeedMailer.feed_mail(@feeds).deliver
-      redirect_to feeds_path, notice: 'Feed was posted'
-    else
-    render :new
-  end
+   @feed= current_user.feeds.build(feed_params)
+   if params[:back]
+     render :new
+   else
+   if @feed.save
+     FeedMailer.feed_mail(@feed).deliver
+     redirect_to feeds_path, notice: 'Feed was posted'
+   else
+     render :new
+   end
  end
 end
 
@@ -55,11 +54,9 @@ end
 
   def destroy
     @feed.destroy
-    respond_to do |format|
-      format.html {redirect_to feeds_url, notice: 'Feed was deleted'}
+      redirect_to feeds_url, notice: 'Feed was deleted'
     end
-  end
-
+  
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_feed
@@ -68,7 +65,7 @@ end
 
     # Only allow a list of trusted parameters through.
   def feed_params
-    params.require(:feed).permit(:image, :content, :image_cache, :user_id, :email)
+    params.require(:feed).permit(:image, :content, :image_cache, :user_id)
   end
 
   def user_login_check
